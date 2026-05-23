@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String?
+  githubId      String?   @unique
+  githubToken   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  apps          App[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model App {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  slug        String      @unique
+  config      Json        // The full JSON app configuration
+  locale      String      @default("en")
+  userId      String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  modelDefs   ModelDef[]
+  records     Record[]
+
+  @@map("apps")
+}
+
+model ModelDef {
+  id        String   @id @default(cuid())
+  appId     String
+  name      String   // e.g. "contacts", "tasks"
+  schema    Json     // JSON Schema definition for validation
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  app       App      @relation(fields: [appId], references: [id], onDelete: Cascade)
+  records   Record[]
+
+  @@unique([appId, name])
+  @@map("model_defs")
+}
+
+model Record {
+  id         String   @id @default(cuid())
+  appId      String
+  modelDefId String
+  data       Json     // The actual record data stored as JSONB
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  app        App      @relation(fields: [appId], references: [id], onDelete: Cascade)
+  modelDef   ModelDef @relation(fields: [modelDefId], references: [id], onDelete: Cascade)
+
+  @@map("records")
+}
