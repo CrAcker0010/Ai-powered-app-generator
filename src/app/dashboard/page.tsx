@@ -32,6 +32,11 @@ export default function DashboardPage() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
   const [wordIndex, setWordIndex] = useState(0)
 
+  const [showJsonModal, setShowJsonModal] = useState(false)
+  const [jsonInput, setJsonInput] = useState('')
+  const [jsonLoading, setJsonLoading] = useState(false)
+  const [jsonError, setJsonError] = useState('')
+
   const animatedWords = ['a JSON', 'a text', 'an idea', 'an inspiration']
 
   useEffect(() => {
@@ -79,6 +84,51 @@ export default function DashboardPage() {
   const handleLogout = async () => {
     await logout()
     router.push('/')
+  }
+
+  const handleJsonImport = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setJsonError('')
+    setJsonLoading(true)
+
+    try {
+      let configObj
+      try {
+        configObj = JSON.parse(jsonInput)
+      } catch (err) {
+        throw new Error('Invalid JSON format. Please verify configuration syntax.')
+      }
+
+      const appName = configObj.name || 'Imported App'
+      const appDesc = configObj.description || 'App generated directly from pasted JSON configuration.'
+      const appLocale = configObj.locale || 'en'
+
+      const res = await fetch('/api/apps', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: appName,
+          description: appDesc,
+          locale: appLocale,
+          config: configObj
+        })
+      })
+
+      const result = await res.json()
+      if (!res.ok) {
+        throw new Error(result.error ?? 'Failed to import application.')
+      }
+
+      toast(`"${appName}" successfully provisioned and deployed!`, 'success')
+      setShowJsonModal(false)
+      setJsonInput('')
+      fetchApps() // refresh dashboard list
+      router.push(`/apps/${result.data.id}`)
+    } catch (err: any) {
+      setJsonError(err.message || 'An error occurred during import.')
+    } finally {
+      setJsonLoading(false)
+    }
   }
 
   const filteredApps = apps.filter(
@@ -146,22 +196,32 @@ export default function DashboardPage() {
               {apps.length} app{apps.length !== 1 ? 's' : ''} · Build anything from JSON
             </p>
           </div>
-          <button
-            id="create-app-btn"
-            className="btn"
-            onClick={() => router.push('/builder')}
-            style={{
-              height: '40px',
-              background: 'linear-gradient(135deg, #6366f1, #0ea5e9)',
-              color: 'white',
-              border: 'none',
-              fontWeight: 600,
-              boxShadow: '0 2px 12px rgba(99,102,241,0.3)',
-            }}
-          >
-            <Sparkles size={15} />
-            Generate App
-          </button>
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
+            <button
+              id="import-json-btn"
+              className="btn btn-secondary"
+              onClick={() => setShowJsonModal(true)}
+              style={{ height: '40px', fontWeight: 600 }}
+            >
+              Import JSON
+            </button>
+            <button
+              id="create-app-btn"
+              className="btn"
+              onClick={() => router.push('/builder')}
+              style={{
+                height: '40px',
+                background: 'linear-gradient(135deg, #6366f1, #0ea5e9)',
+                color: 'white',
+                border: 'none',
+                fontWeight: 600,
+                boxShadow: '0 2px 12px rgba(99,102,241,0.3)',
+              }}
+            >
+              <Sparkles size={15} />
+              Generate App
+            </button>
+          </div>
         </div>
 
         {/* Stats */}
@@ -299,6 +359,101 @@ export default function DashboardPage() {
           </div>
         )}
       </main>
+
+      {/* Import JSON Modal */}
+      {showJsonModal && (
+        <div className="modal-overlay" onClick={() => !jsonLoading && setShowJsonModal(false)}>
+          <div 
+            className="modal-content glass-strong" 
+            onClick={(e) => e.stopPropagation()}
+            style={{ 
+              maxWidth: '600px', 
+              padding: '2rem',
+              boxShadow: '0 24px 64px rgba(0,0,0,0.8), 0 0 80px rgba(99, 102, 241, 0.05)'
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+              <div>
+                <h2 style={{ fontSize: '1.375rem', fontWeight: 800, color: 'var(--text-primary)' }}>Import App Configuration</h2>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.8125rem', marginTop: '0.25rem' }}>
+                  Paste a raw AppConfig JSON block to instantly generate database tables, schemas, and views.
+                </p>
+              </div>
+              <button 
+                className="btn btn-ghost" 
+                onClick={() => !jsonLoading && setShowJsonModal(false)}
+                style={{ padding: '0.25rem', borderRadius: '50%', minWidth: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                disabled={jsonLoading}
+              >
+                ✕
+              </button>
+            </div>
+
+            {jsonError && (
+              <div style={{ padding: '0.75rem 1rem', background: 'rgba(255,77,109,0.1)', border: '1px solid rgba(255,77,109,0.3)', borderRadius: '8px', marginBottom: '1.25rem', color: 'var(--accent-red)', fontSize: '0.85rem' }}>
+                ⚠️ {jsonError}
+              </div>
+            )}
+
+            <form onSubmit={handleJsonImport}>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label className="label" htmlFor="json-config-textarea">JSON Configuration Code</label>
+                <textarea
+                  id="json-config-textarea"
+                  value={jsonInput}
+                  onChange={(e) => setJsonInput(e.target.value)}
+                  placeholder={`{\n  "name": "My Custom App",\n  "description": "App description...",\n  "locale": "en",\n  "theme": { "primaryColor": "#6366f1", "mode": "dark" },\n  "models": {\n    "leads": {\n      "name": "leads",\n      "label": "Leads",\n      "fields": {\n        "company": { "type": "string", "label": "Company Name", "required": true }\n      }\n    }\n  },\n  "views": [],\n  "nav": []\n}`}
+                  disabled={jsonLoading}
+                  required
+                  rows={12}
+                  style={{
+                    width: '100%',
+                    padding: '0.875rem',
+                    background: 'rgba(0,0,0,0.3)',
+                    border: '1px solid var(--border-strong)',
+                    borderRadius: '8px',
+                    color: 'var(--accent-cyan)',
+                    fontFamily: 'monospace',
+                    fontSize: '0.8rem',
+                    lineHeight: '1.5',
+                    resize: 'vertical',
+                    outline: 'none',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = 'var(--accent-purple)'}
+                  onBlur={(e) => e.target.style.borderColor = 'var(--border-strong)'}
+                />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+                <button 
+                  type="button" 
+                  className="btn btn-ghost" 
+                  onClick={() => setShowJsonModal(false)}
+                  disabled={jsonLoading}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary"
+                  disabled={jsonLoading || !jsonInput.trim()}
+                  style={{ minWidth: '120px', justifyContent: 'center' }}
+                >
+                  {jsonLoading ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin" />
+                      Provisioning...
+                    </>
+                  ) : (
+                    'Provision App'
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
     </div>
   )
