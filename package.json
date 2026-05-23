@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "vercel-build": "npx prisma generate && npx prisma db push && next build && npx prisma db seed",
+    "vercel-build": "export DATABASE_URL=\"${DATABASE_URL:-postgresql://localhost:5432/dummy}\" && npx prisma generate && if [ \"$DATABASE_URL\" != \"postgresql://localhost:5432/dummy\" ]; then npx prisma db push && npx prisma db seed; else echo \"Skipping DB sync (DATABASE_URL not set)\"; fi && next build",
     "start": "next start",
     "lint": "eslint"
   },
