@@ -29,24 +29,24 @@
     "octokit": "^5.0.5",
     "papaparse": "^5.5.3",
     "prisma": "^5.22.0",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "react-error-boundary": "^6.1.1",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "react-error-boundary": "^6.1.2",
     "tailwind-merge": "^3.6.0",
     "uuid": "^14.0.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^25",
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "eslint": "^10",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^6"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"

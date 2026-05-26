@@ -51,7 +51,7 @@ export async function POST(req: NextRequest, { params }: RouteParams) {
       repoName,
       description: description ?? app.description ?? undefined,
       config: app.config as AppConfig,
-      modelDefs: app.modelDefs.map((m) => ({ name: m.name, schema: m.schema })),
+      modelDefs: app.modelDefs.map((m: any) => ({ name: m.name, schema: m.schema })),
     })
 
     if (!result.success) {
