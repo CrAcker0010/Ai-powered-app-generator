@@ -93,7 +93,7 @@ export default function LandingPage() {
               ) : (
                 <>
                   <Link href="/auth/login" className="btn btn-ghost" style={{ height: '36px' }}>Login</Link>
-                  <Link href="/auth/signup" className="btn btn-primary" style={{ height: '36px' }}>Get Started</Link>
+                  <Link href="/dashboard" className="btn btn-primary" style={{ height: '36px' }}>Get Started</Link>
                 </>
               )
             )}
@@ -119,7 +119,7 @@ export default function LandingPage() {
         </p>
 
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/auth/signup" className="btn btn-primary" style={{ height: '48px', fontSize: '1rem', padding: '0 1.75rem' }}>
+          <Link href="/dashboard" className="btn btn-primary" style={{ height: '48px', fontSize: '1rem', padding: '0 1.75rem' }}>
             Start Building Free
             <ArrowRight size={16} />
           </Link>
@@ -182,7 +182,7 @@ export default function LandingPage() {
           <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
             Create your first app in under 2 minutes.
           </p>
-          <Link href="/auth/signup" className="btn btn-primary" style={{ height: '48px', fontSize: '1rem', padding: '0 2rem' }}>
+          <Link href="/dashboard" className="btn btn-primary" style={{ height: '48px', fontSize: '1rem', padding: '0 2rem' }}>
             Get Started Free <ArrowRight size={16} />
           </Link>
         </div>
