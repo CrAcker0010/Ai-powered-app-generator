@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { validateRecord } from '@/lib/validation'
-import { getServerSession } from '@/lib/auth-helpers'
 
 interface RouteParams {
   params: Promise<{ appId: string; model: string; recordId: string }>
@@ -10,11 +9,8 @@ interface RouteParams {
 // GET /api/apps/[appId]/data/[model]/[recordId]
 export async function GET(req: NextRequest, { params }: RouteParams) {
   try {
-    const session = await getServerSession(req)
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
     const { appId, model, recordId } = await params
-    const app = await prisma.app.findFirst({ where: { id: appId, userId: session.userId } })
+    const app = await prisma.app.findUnique({ where: { id: appId } })
     if (!app) return NextResponse.json({ error: 'App not found' }, { status: 404 })
 
     const modelDef = await prisma.modelDef.findUnique({ where: { appId_name: { appId, name: model } } })
@@ -33,11 +29,8 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 // PUT /api/apps/[appId]/data/[model]/[recordId]
 export async function PUT(req: NextRequest, { params }: RouteParams) {
   try {
-    const session = await getServerSession(req)
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
     const { appId, model, recordId } = await params
-    const app = await prisma.app.findFirst({ where: { id: appId, userId: session.userId } })
+    const app = await prisma.app.findUnique({ where: { id: appId } })
     if (!app) return NextResponse.json({ error: 'App not found' }, { status: 404 })
 
     const modelDef = await prisma.modelDef.findUnique({ where: { appId_name: { appId, name: model } } })
@@ -73,11 +66,8 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
 // DELETE /api/apps/[appId]/data/[model]/[recordId]
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
   try {
-    const session = await getServerSession(req)
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
     const { appId, model, recordId } = await params
-    const app = await prisma.app.findFirst({ where: { id: appId, userId: session.userId } })
+    const app = await prisma.app.findUnique({ where: { id: appId } })
     if (!app) return NextResponse.json({ error: 'App not found' }, { status: 404 })
 
     const modelDef = await prisma.modelDef.findUnique({ where: { appId_name: { appId, name: model } } })

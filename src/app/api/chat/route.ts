@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateObject } from 'ai'
 import { google, createGoogleGenerativeAI } from '@ai-sdk/google'
-import { getServerSession } from '@/lib/auth-helpers'
 import { z } from 'zod'
 
 export const maxDuration = 30
@@ -31,11 +30,6 @@ const chatResponseSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(req)
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
     const { messages } = await req.json()
     if (!messages || !Array.isArray(messages)) {
       return NextResponse.json({ error: 'Messages are required' }, { status: 400 })

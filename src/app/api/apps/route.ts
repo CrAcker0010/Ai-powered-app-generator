@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
 import { slugify } from '@/lib/utils'
-import { getServerSession } from '@/lib/auth-helpers'
 
 const createAppSchema = z.object({
   name: z.string().min(1).max(100),
@@ -11,16 +10,10 @@ const createAppSchema = z.object({
   locale: z.string().optional().default('en'),
 })
 
-// GET /api/apps — List all apps for the current user
+// GET /api/apps — List all apps globally
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(req)
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
     const apps = await prisma.app.findMany({
-      where: { userId: session.userId },
       orderBy: { updatedAt: 'desc' },
       include: {
         _count: { select: { records: true, modelDefs: true } },
@@ -37,9 +30,9 @@ export async function GET(req: NextRequest) {
 // POST /api/apps — Create a new app
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(req)
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const defaultUser = await prisma.user.findFirst()
+    if (!defaultUser) {
+      return NextResponse.json({ error: 'Seeded default user not found' }, { status: 500 })
     }
 
     const body = await req.json()
@@ -71,7 +64,7 @@ export async function POST(req: NextRequest) {
         slug,
         locale,
         config: appConfig as object,
-        userId: session.userId,
+        userId: defaultUser.id,
         // Create model defs from the config models
         modelDefs: models
           ? {

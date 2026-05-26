@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/contexts/ToastContext'
 import { Renderer } from '@/components/engine/Renderer'
 import { CsvImportModal } from '@/components/app/CsvImportModal'
@@ -41,7 +40,6 @@ function ViewIcon({ type }: { type: string }) {
 export default function AppPage() {
   const { appId } = useParams() as { appId: string }
   const router = useRouter()
-  const { user, loading: authLoading } = useAuth()
   const toast = useToast()
 
   const [app, setApp] = useState<AppData | null>(null)
@@ -55,9 +53,7 @@ export default function AppPage() {
   const [saving, setSaving] = useState(false)
   const [locale, setLocale] = useState('en')
 
-  useEffect(() => {
-    if (!authLoading && !user) router.push('/auth/login')
-  }, [user, authLoading, router])
+
 
   const fetchApp = useCallback(async () => {
     try {
@@ -80,8 +76,8 @@ export default function AppPage() {
   }, [appId, router, toast])
 
   useEffect(() => {
-    if (user) fetchApp()
-  }, [user, fetchApp])
+    fetchApp()
+  }, [fetchApp])
 
   const handleSaveConfig = async () => {
     let config: AppConfig
@@ -110,7 +106,7 @@ export default function AppPage() {
     }
   }
 
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ textAlign: 'center' }}>

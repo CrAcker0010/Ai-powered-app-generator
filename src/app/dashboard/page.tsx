@@ -3,10 +3,9 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/contexts/ToastContext'
 import {
-  Plus, Zap, LogOut, LayoutDashboard, Trash2, ExternalLink,
+  Plus, Zap, LayoutDashboard, Trash2, ExternalLink,
   Database, Clock, Search, Loader2, Sparkles
 } from 'lucide-react'
 import { formatDateTime } from '@/lib/utils'
@@ -24,7 +23,6 @@ interface AppSummary {
 
 export default function DashboardPage() {
   const router = useRouter()
-  const { user, loading: authLoading, logout } = useAuth()
   const toast = useToast()
   const [apps, setApps] = useState<AppSummary[]>([])
   const [loading, setLoading] = useState(true)
@@ -46,12 +44,6 @@ export default function DashboardPage() {
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/auth/login')
-    }
-  }, [user, authLoading, router])
-
   const fetchApps = async () => {
     try {
       setLoading(true)
@@ -67,8 +59,8 @@ export default function DashboardPage() {
   }
 
   useEffect(() => {
-    if (user) fetchApps()
-  }, [user])
+    fetchApps()
+  }, [])
 
   const handleDelete = async (id: string) => {
     try {
@@ -79,11 +71,6 @@ export default function DashboardPage() {
     } catch {
       toast('Failed to delete app', 'error')
     }
-  }
-
-  const handleLogout = async () => {
-    await logout()
-    router.push('/')
   }
 
   const handleJsonImport = async (e: React.FormEvent) => {
@@ -137,15 +124,7 @@ export default function DashboardPage() {
       (a.description?.toLowerCase().includes(search.toLowerCase()) ?? false)
   )
 
-  if (authLoading) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Loader2 size={24} className="animate-spin" style={{ color: 'var(--accent-purple)' }} />
-      </div>
-    )
-  }
 
-  if (!user) return null
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -174,14 +153,10 @@ export default function DashboardPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem' }}>
               <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-blue))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700, color: 'white' }}>
-                {(user.name ?? user.email)?.[0]?.toUpperCase() ?? '?'}
+                G
               </div>
-              <span style={{ color: 'var(--text-secondary)' }}>{user.name ?? user.email}</span>
+              <span style={{ color: 'var(--text-secondary)' }}>Guest</span>
             </div>
-            <button className="btn btn-ghost" onClick={handleLogout} style={{ height: '32px', padding: '0 0.625rem', fontSize: '0.8125rem', gap: '0.375rem' }}>
-              <LogOut size={13} />
-              Logout
-            </button>
           </div>
         </div>
       </header>

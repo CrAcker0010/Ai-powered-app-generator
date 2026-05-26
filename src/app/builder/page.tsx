@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useAuth } from '@/contexts/AuthContext'
 import { useToast } from '@/contexts/ToastContext'
 import {
   ArrowLeft, Sparkles, Send, Loader2, Zap,
@@ -18,7 +17,6 @@ interface Message {
 
 export default function BuilderPage() {
   const router = useRouter()
-  const { user, loading: authLoading } = useAuth()
   const toast = useToast()
 
   const [pipelineStage, setPipelineStage] = useState<1 | 2 | 3 | 4>(1)
@@ -52,12 +50,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  // Redirect if not logged in
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/auth/login')
-    }
-  }, [user, authLoading, router])
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value)
@@ -157,15 +150,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
     }
   }
 
-  if (authLoading) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
-        <Loader2 size={24} className="animate-spin" style={{ color: 'var(--accent-purple)' }} />
-      </div>
-    )
-  }
 
-  if (!user) return null
 
   return (
     <div style={{

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { exportToGithub } from '@/lib/github'
-import { getServerSession } from '@/lib/auth-helpers'
 import { z } from 'zod'
 import type { AppConfig } from '@/types/app'
 
@@ -22,13 +21,10 @@ const exportSchema = z.object({
 // POST /api/apps/[appId]/export
 export async function POST(req: NextRequest, { params }: RouteParams) {
   try {
-    const session = await getServerSession(req)
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
     const { appId } = await params
 
-    const app = await prisma.app.findFirst({
-      where: { id: appId, userId: session.userId },
+    const app = await prisma.app.findUnique({
+      where: { id: appId },
       include: { modelDefs: true },
     })
     if (!app) return NextResponse.json({ error: 'App not found' }, { status: 404 })

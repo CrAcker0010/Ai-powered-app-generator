@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getServerSession } from '@/lib/auth-helpers'
 import Papa from 'papaparse'
 
 interface RouteParams {
@@ -11,11 +10,8 @@ interface RouteParams {
 // Accepts multipart/form-data with fields: file (CSV), model (string)
 export async function POST(req: NextRequest, { params }: RouteParams) {
   try {
-    const session = await getServerSession(req)
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
     const { appId } = await params
-    const app = await prisma.app.findFirst({ where: { id: appId, userId: session.userId } })
+    const app = await prisma.app.findUnique({ where: { id: appId } })
     if (!app) return NextResponse.json({ error: 'App not found' }, { status: 404 })
 
     const formData = await req.formData()

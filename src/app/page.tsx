@@ -1,8 +1,5 @@
-'use client'
-
 import React from 'react'
 import Link from 'next/link'
-import { useAuth } from '@/contexts/AuthContext'
 import { ArrowRight, Zap, Database, Code2, Globe, GitBranch, FileSpreadsheet } from 'lucide-react'
 
 const features = [
@@ -66,8 +63,6 @@ const sampleConfigs = [
 ]
 
 export default function LandingPage() {
-  const { user, loading } = useAuth()
-
   return (
     <div style={{ minHeight: '100vh', position: 'relative', zIndex: 1 }}>
       {/* Nav */}
@@ -85,18 +80,9 @@ export default function LandingPage() {
             <span style={{ fontWeight: 800, fontSize: '1.125rem' }} className="gradient-text">AppForge</span>
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-            {!loading && (
-              user ? (
-                <Link href="/dashboard" className="btn btn-primary" style={{ height: '36px' }}>
-                  Dashboard <ArrowRight size={14} />
-                </Link>
-              ) : (
-                <>
-                  <Link href="/auth/login" className="btn btn-ghost" style={{ height: '36px' }}>Login</Link>
-                  <Link href="/dashboard" className="btn btn-primary" style={{ height: '36px' }}>Get Started</Link>
-                </>
-              )
-            )}
+            <Link href="/dashboard" className="btn btn-primary" style={{ height: '36px' }}>
+              Dashboard <ArrowRight size={14} />
+            </Link>
           </div>
         </div>
       </nav>
@@ -122,9 +108,6 @@ export default function LandingPage() {
           <Link href="/dashboard" className="btn btn-primary" style={{ height: '48px', fontSize: '1rem', padding: '0 1.75rem' }}>
             Start Building Free
             <ArrowRight size={16} />
-          </Link>
-          <Link href="/auth/login" className="btn btn-secondary" style={{ height: '48px', fontSize: '1rem', padding: '0 1.75rem' }}>
-            Sign In
           </Link>
         </div>
       </section>

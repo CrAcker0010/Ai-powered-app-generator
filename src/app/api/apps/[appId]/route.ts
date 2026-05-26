@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { z } from 'zod'
-import { getServerSession } from '@/lib/auth-helpers'
 
 const updateAppSchema = z.object({
   name: z.string().min(1).max(100).optional(),
@@ -13,12 +12,9 @@ const updateAppSchema = z.object({
 // GET /api/apps/[appId]
 export async function GET(req: NextRequest, { params }: { params: Promise<{ appId: string }> }) {
   try {
-    const session = await getServerSession(req)
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
     const { appId } = await params
-    const app = await prisma.app.findFirst({
-      where: { id: appId, userId: session.userId },
+    const app = await prisma.app.findUnique({
+      where: { id: appId },
       include: { modelDefs: true, _count: { select: { records: true } } },
     })
 
@@ -34,11 +30,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ appI
 // PATCH /api/apps/[appId]
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ appId: string }> }) {
   try {
-    const session = await getServerSession(req)
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
     const { appId } = await params
-    const existing = await prisma.app.findFirst({ where: { id: appId, userId: session.userId } })
+    const existing = await prisma.app.findUnique({ where: { id: appId } })
     if (!existing) return NextResponse.json({ error: 'App not found' }, { status: 404 })
 
     const body = await req.json()
@@ -87,11 +80,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ ap
 // DELETE /api/apps/[appId]
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ appId: string }> }) {
   try {
-    const session = await getServerSession(req)
-    if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
     const { appId } = await params
-    const existing = await prisma.app.findFirst({ where: { id: appId, userId: session.userId } })
+    const existing = await prisma.app.findUnique({ where: { id: appId } })
     if (!existing) return NextResponse.json({ error: 'App not found' }, { status: 404 })
 
     await prisma.app.delete({ where: { id: appId } })

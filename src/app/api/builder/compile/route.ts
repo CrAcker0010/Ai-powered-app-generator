@@ -3,7 +3,6 @@ import { generateObject } from 'ai'
 import { google, createGoogleGenerativeAI } from '@ai-sdk/google'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
-import { getServerSession } from '@/lib/auth-helpers'
 import { slugify } from '@/lib/utils'
 
 export const maxDuration = 45
@@ -98,9 +97,9 @@ export async function POST(req: NextRequest) {
   const agentLogs: { agent: string; action: string; durationMs: number }[] = []
   
   try {
-    const session = await getServerSession(req)
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const defaultUser = await prisma.user.findFirst()
+    if (!defaultUser) {
+      return NextResponse.json({ error: 'Seeded default user not found' }, { status: 500 })
     }
 
     const { messages } = await req.json()
@@ -222,7 +221,7 @@ Verify:
         slug,
         locale: finalConfig.locale,
         config: finalConfig as object,
-        userId: session.userId,
+        userId: defaultUser.id,
         modelDefs: {
           create: Object.entries(models).map(([modelName, modelDef]) => ({
             name: modelName,
