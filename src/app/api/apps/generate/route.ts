@@ -108,7 +108,7 @@ Rules:
 - Navigation items must map to valid view IDs
 - Field keys must be camelCase, no spaces
 - Enum values must be realistic for the domain
-- Pick a theme primaryColor as a CSS hex color that suits the app's industry (use muted, professional tones like #6366f1, #0ea5e9, #10b981, #f59e0b)
+- Pick a theme primaryColor as a CSS hex color from these strict light pastel tones only: #e2e8f0 (slate), #bfdbfe (blue), #c7d2fe (indigo), #ddd6fe (violet), #e9d5ff (purple), #bbf7d0 (green), #a5f3fc (cyan), #fde68a (amber)
 - The app should feel like a real internal tool a team would actually use`,
       prompt: `Design a complete application for: "${prompt.trim()}"`,
     })

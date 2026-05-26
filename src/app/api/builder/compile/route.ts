@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
     // ─── AGENT 1: PROMPT ENHANCER (Requirements Specialist) ───────────────────
     const startAgent1 = Date.now()
     const agent1Prompt = `Read the following chat history between an App Architect and a user.
-Your job is to enhance their requirements, scope the system goals, select an appropriate primary accent color (hex code suitable for the app's niche, e.g. #6366f1, #0ea5e9, #10b981), and synthesize a technical requirements blueprint.`
+Your job is to enhance their requirements, scope the system goals, select an appropriate primary accent color (hex code suitable for the app's niche from these strict light pastel tones only: #e2e8f0 (slate), #bfdbfe (blue), #c7d2fe (indigo), #ddd6fe (violet), #e9d5ff (purple), #bbf7d0 (green), #a5f3fc (cyan), #fde68a (amber)), and synthesize a technical requirements blueprint.`
     
     const agent1Result = await generateObject({
       model: getModelForAgent('prompt_enhancer'),

@@ -186,11 +186,11 @@ export default function DashboardPage() {
               onClick={() => router.push('/builder')}
               style={{
                 height: '40px',
-                background: 'linear-gradient(135deg, #6366f1, #0ea5e9)',
-                color: 'white',
+                background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-blue))',
+                color: 'var(--bg)',
                 border: 'none',
                 fontWeight: 600,
-                boxShadow: '0 2px 12px rgba(99,102,241,0.3)',
+                boxShadow: '0 2px 12px var(--shadow-color)',
               }}
             >
               <Sparkles size={15} />

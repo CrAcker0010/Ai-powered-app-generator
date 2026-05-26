@@ -192,11 +192,11 @@ To get started, tell me: **what should be the workflow steps for this applicatio
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <div style={{
               width: '24px', height: '24px',
-              background: 'linear-gradient(135deg, #6366f1, #0ea5e9)',
+              background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-blue))',
               borderRadius: '6px',
               display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}>
-              <Sparkles size={12} color="white" />
+              <Sparkles size={12} color="var(--bg)" />
             </div>
             <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>Conversational Builder</span>
           </div>
@@ -213,9 +213,9 @@ To get started, tell me: **what should be the workflow steps for this applicatio
               background: compiling
                 ? 'var(--surface-overlay)'
                 : messages.length >= 2
-                  ? 'linear-gradient(135deg, #10b981, #059669)'
+                  ? 'linear-gradient(135deg, var(--accent-green), var(--accent-cyan))'
                   : 'var(--surface-overlay)',
-              color: 'white',
+              color: 'var(--bg)',
               border: 'none',
               fontSize: '0.85rem',
               fontWeight: 600,
@@ -367,13 +367,13 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   width: '34px',
                   height: '34px',
                   borderRadius: '8px',
-                  background: input.trim() ? 'linear-gradient(135deg, #6366f1, #0ea5e9)' : 'rgba(255,255,255,0.05)',
+                  background: input.trim() ? 'linear-gradient(135deg, var(--accent-purple), var(--accent-blue))' : 'var(--surface-raised)',
                   border: 'none',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: input.trim() ? 'pointer' : 'not-allowed',
-                  color: 'white',
+                  color: 'var(--bg)',
                   transition: 'all 0.2s',
                   marginBottom: '2px',
                 }}
@@ -427,19 +427,19 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                       height: '32px',
                       borderRadius: '50%',
                       background: isCompleted
-                        ? 'linear-gradient(135deg, #10b981, #059669)'
+                        ? 'linear-gradient(135deg, var(--accent-green), var(--accent-cyan))'
                         : isActive
-                          ? 'linear-gradient(135deg, #6366f1, #0ea5e9)'
-                          : 'rgba(255,255,255,0.05)',
-                      border: isActive ? '2px solid rgba(255,255,255,0.4)' : '1px solid var(--border)',
+                          ? 'linear-gradient(135deg, var(--accent-purple), var(--accent-blue))'
+                          : 'var(--surface-raised)',
+                      border: isActive ? '2px solid var(--border-strong)' : '1px solid var(--border)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: '0.8rem',
                       fontWeight: 700,
-                      color: isCompleted || isActive ? 'white' : 'var(--text-muted)',
+                      color: isCompleted || isActive ? 'var(--bg)' : 'var(--text-muted)',
                       transition: 'all 0.3s ease',
-                      boxShadow: isActive ? '0 0 12px rgba(99,102,241,0.4)' : 'none',
+                      boxShadow: isActive ? '0 0 12px var(--shadow-color)' : 'none',
                     }}>
                       {isCompleted ? '✓' : step.num}
                     </div>
@@ -456,7 +456,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   {idx < 3 && (
                     <div style={{
                       height: '2px',
-                      background: isCompleted ? 'linear-gradient(90deg, #10b981, #6366f1)' : 'var(--border)',
+                      background: isCompleted ? 'linear-gradient(90deg, var(--accent-green), var(--accent-purple))' : 'var(--border)',
                       flex: 1.5,
                       margin: '0 0.5rem',
                       alignSelf: 'center',
@@ -481,7 +481,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
             {pipelineStage === 1 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1 }}>
                 <div>
-                  <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#6366f1', marginBottom: '0.375rem' }}>Stage 1: Define User Workflow</h2>
+                  <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-purple)', marginBottom: '0.375rem' }}>Stage 1: Define User Workflow</h2>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{appDescription || 'Describe the actions your users will perform. We will construct a dynamic workflow based on this.'}</p>
                 </div>
                 <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.25rem' }}>
@@ -489,7 +489,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     {checklist.map((item, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', fontSize: '0.85rem' }}>
-                        {item.done ? <CheckCircle2 size={16} color="#10b981" /> : <Circle size={16} color="var(--text-muted)" />}
+                        {item.done ? <CheckCircle2 size={16} color="var(--accent-green)" /> : <Circle size={16} color="var(--text-muted)" />}
                         <span style={{ color: item.done ? 'var(--text-secondary)' : 'var(--text-muted)' }}>{item.text}</span>
                       </div>
                     ))}
@@ -520,7 +520,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
             {pipelineStage === 2 && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', flex: 1 }}>
                 <div>
-                  <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0ea5e9', marginBottom: '0.375rem' }}>Stage 2: Design Data Models</h2>
+                  <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-blue)', marginBottom: '0.375rem' }}>Stage 2: Design Data Models</h2>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{appDescription}</p>
                 </div>
                 <div style={{ borderTop: '1px solid var(--border)', paddingTop: '1.25rem' }}>
@@ -528,7 +528,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     {checklist.map((item, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', fontSize: '0.85rem' }}>
-                        {item.done ? <CheckCircle2 size={16} color="#10b981" /> : <Circle size={16} color="var(--text-muted)" />}
+                        {item.done ? <CheckCircle2 size={16} color="var(--accent-green)" /> : <Circle size={16} color="var(--text-muted)" />}
                         <span style={{ color: item.done ? 'var(--text-secondary)' : 'var(--text-muted)' }}>{item.text}</span>
                       </div>
                     ))}
@@ -573,7 +573,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     {checklist.map((item, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', fontSize: '0.85rem' }}>
-                        {item.done ? <CheckCircle2 size={16} color="#10b981" /> : <Circle size={16} color="var(--text-muted)" />}
+                        {item.done ? <CheckCircle2 size={16} color="var(--accent-green)" /> : <Circle size={16} color="var(--text-muted)" />}
                         <span style={{ color: item.done ? 'var(--text-secondary)' : 'var(--text-muted)' }}>{item.text}</span>
                       </div>
                     ))}
@@ -651,7 +651,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     {checklist.map((item, i) => (
                       <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', fontSize: '0.85rem' }}>
-                        {item.done ? <CheckCircle2 size={16} color="#10b981" /> : <Circle size={16} color="var(--text-muted)" />}
+                        {item.done ? <CheckCircle2 size={16} color="var(--accent-green)" /> : <Circle size={16} color="var(--text-muted)" />}
                         <span style={{ color: item.done ? 'var(--text-secondary)' : 'var(--text-muted)' }}>{item.text}</span>
                       </div>
                     ))}
@@ -664,8 +664,8 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  background: 'rgba(16,185,129,0.02)',
-                  border: '1px dashed rgba(16,185,129,0.3)',
+                  background: 'rgba(187,247,208,0.1)',
+                  border: '1px dashed var(--accent-green)',
                   borderRadius: '12px',
                   padding: '1.5rem',
                   textAlign: 'center',
@@ -673,12 +673,12 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   <div style={{
                     width: '48px', height: '48px',
                     borderRadius: '50%',
-                    background: 'rgba(16,185,129,0.1)',
-                    color: '#10b981',
+                    background: 'rgba(187,247,208,0.25)',
+                    color: 'var(--accent-green)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     marginBottom: '1rem',
                   }}>
-                    <Play size={20} fill="#10b981" />
+                    <Play size={20} fill="var(--accent-green)" />
                   </div>
                   <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.25rem' }}>Your Application is Ready!</h3>
                   <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', maxWidth: '300px', marginBottom: '1.25rem' }}>
