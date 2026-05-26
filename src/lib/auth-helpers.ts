@@ -11,7 +11,21 @@ export interface SessionUser {
 export async function getServerSession(req: NextRequest): Promise<SessionUser | null> {
   try {
     const token = req.cookies.get('session')?.value
-    if (!token) return null
+    if (!token) {
+      // Fallback to seeded demo user to remove login compulsion
+      const demoUser = await prisma.user.findUnique({
+        where: { email: 'demo@appforge.dev' },
+      })
+      if (demoUser) {
+        return {
+          userId: demoUser.id,
+          email: demoUser.email,
+          name: demoUser.name,
+          githubToken: demoUser.githubToken,
+        }
+      }
+      return null
+    }
 
     const session = await prisma.session.findUnique({
       where: { token },
@@ -20,6 +34,19 @@ export async function getServerSession(req: NextRequest): Promise<SessionUser | 
 
     if (!session || session.expiresAt < new Date()) {
       if (session) await prisma.session.delete({ where: { token } }).catch(() => {})
+      
+      // Fallback to seeded demo user to remove login compulsion
+      const demoUser = await prisma.user.findUnique({
+        where: { email: 'demo@appforge.dev' },
+      })
+      if (demoUser) {
+        return {
+          userId: demoUser.id,
+          email: demoUser.email,
+          name: demoUser.name,
+          githubToken: demoUser.githubToken,
+        }
+      }
       return null
     }
 
