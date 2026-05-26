@@ -3,24 +3,55 @@
 
 :root {
   /* Primary palette */
-  --primary: 250 100% 65%;
-  --primary-dark: 250 100% 55%;
-  --primary-glow: rgba(99, 88, 255, 0.25);
+  --primary: 250 100% 60%;
+  --primary-dark: 250 100% 50%;
+  --primary-glow: rgba(99, 88, 255, 0.15);
 
-  /* Surface colors */
+  /* Surface colors (Light Theme default) */
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-raised: #f1f5f9;
+  --surface-overlay: #e2e8f0;
+  --border: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.15);
+  --shadow-color: rgba(15, 23, 42, 0.08);
+
+  /* Text (Light Theme default) */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  /* Accent colors (High Contrast Light Mode) */
+  --accent-purple: #6366f1;
+  --accent-blue: #2563eb;
+  --accent-cyan: #0284c7;
+  --accent-green: #059669;
+  --accent-amber: #d97706;
+  --accent-red: #dc2626;
+
+  /* Semantic */
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --info: #2563eb;
+}
+
+[data-theme='dark'] {
+  /* Surface colors (Dark Theme) */
   --bg: #0a0a0f;
   --surface: #12121a;
   --surface-raised: #1a1a26;
   --surface-overlay: #222235;
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.15);
+  --shadow-color: rgba(0, 0, 0, 0.4);
 
-  /* Text */
+  /* Text (Dark Theme) */
   --text-primary: #f0f0ff;
   --text-secondary: #9090b0;
   --text-muted: #5a5a7a;
 
-  /* Accent colors */
+  /* Accent colors (Sleek Dark Mode) */
   --accent-purple: #7c6fff;
   --accent-blue: #4f9cff;
   --accent-cyan: #00d2ff;
@@ -136,14 +167,14 @@ code, pre, .font-mono {
 
 /* Glass morphism */
 .glass {
-  background: rgba(26, 26, 38, 0.8);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
 }
 
 .glass-strong {
-  background: rgba(18, 18, 26, 0.95);
+  background: color-mix(in srgb, var(--surface) 95%, transparent);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-strong);
@@ -168,7 +199,7 @@ code, pre, .font-mono {
 .card:hover {
   border-color: var(--border-strong);
   transform: translateY(-1px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px var(--shadow-color);
 }
 
 .card-interactive {
@@ -177,7 +208,7 @@ code, pre, .font-mono {
 
 .card-interactive:hover {
   border-color: rgba(124, 111, 255, 0.4);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(124, 111, 255, 0.1);
+  box-shadow: 0 8px 32px var(--shadow-color), 0 0 0 1px rgba(124, 111, 255, 0.1);
 }
 
 /* Button base */
@@ -404,7 +435,7 @@ tr:last-child td {
 }
 
 tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-raised);
 }
 
 /* Modal / Dialog */
@@ -430,7 +461,7 @@ tr:hover td {
   max-height: 90vh;
   overflow-y: auto;
   animation: fadeIn 0.2s ease;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 24px 64px var(--shadow-color);
 }
 
 /* Toast */
@@ -446,7 +477,7 @@ tr:hover td {
   border-radius: 10px;
   max-width: 400px;
   animation: slideInRight 0.3s ease;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 32px var(--shadow-color);
 }
 
 .toast-success {

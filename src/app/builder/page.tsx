@@ -159,7 +159,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
 
   if (authLoading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(10,10,15,1)' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
         <Loader2 size={24} className="animate-spin" style={{ color: 'var(--accent-purple)' }} />
       </div>
     )
@@ -172,7 +172,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
       height: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      background: 'rgba(10,10,15,1)',
+      background: 'var(--bg)',
       color: 'var(--text-primary)',
       overflow: 'hidden',
     }}>
@@ -180,7 +180,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
       <header style={{
         height: '56px',
         borderBottom: '1px solid var(--border)',
-        background: 'rgba(12,12,18,0.85)',
+        background: 'color-mix(in srgb, var(--surface) 85%, transparent)',
         backdropFilter: 'blur(12px)',
         display: 'flex',
         alignItems: 'center',
@@ -267,7 +267,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
           display: 'flex',
           flexDirection: 'column',
           borderRight: '1px solid var(--border)',
-          background: 'rgba(11,11,16,0.5)',
+          background: 'color-mix(in srgb, var(--surface-raised) 50%, transparent)',
           position: 'relative',
           height: '100%',
         }}>
@@ -310,11 +310,9 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   padding: '0.875rem 1.125rem',
                   borderRadius: m.role === 'user' ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
                   background: m.role === 'user'
-                    ? 'rgba(99,102,241,0.12)'
-                    : 'rgba(255,255,255,0.03)',
-                  border: m.role === 'user'
-                    ? '1px solid rgba(99,102,241,0.25)'
-                    : '1px solid var(--border)',
+                    ? 'color-mix(in srgb, var(--accent-purple) 12%, transparent)'
+                    : 'var(--surface)',
+                  border: '1px solid var(--border)',
                   color: 'var(--text-primary)',
                   fontSize: '0.875rem',
                   lineHeight: 1.6,
@@ -341,18 +339,18 @@ To get started, tell me: **what should be the workflow steps for this applicatio
             left: 0,
             right: 0,
             padding: '1.25rem',
-            background: 'linear-gradient(to top, rgba(11,11,16,1) 80%, rgba(11,11,16,0))',
-            borderTop: '1px solid rgba(255,255,255,0.02)',
+            background: 'linear-gradient(to top, var(--surface-raised) 80%, transparent)',
+            borderTop: '1px solid var(--border)',
             zIndex: 20,
           }}>
             <form onSubmit={handleSubmit} style={{
               display: 'flex',
               gap: '0.5rem',
-              background: 'rgba(20,20,30,0.95)',
+              background: 'var(--surface)',
               border: '1px solid var(--border-strong)',
               borderRadius: '12px',
               padding: '0.5rem 0.5rem 0.5rem 1rem',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
+              boxShadow: '0 4px 20px var(--shadow-color)',
               alignItems: 'flex-end',
             }}>
               <textarea
@@ -406,7 +404,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          background: 'rgba(8,8,12,0.98)',
+          background: 'var(--bg)',
           padding: '2rem',
           overflowY: 'auto',
         }}>
@@ -416,7 +414,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
             alignItems: 'center',
             justifyContent: 'space-between',
             marginBottom: '2rem',
-            background: 'rgba(255,255,255,0.02)',
+            background: 'var(--surface)',
             padding: '1.25rem',
             borderRadius: '12px',
             border: '1px solid var(--border)',
@@ -488,7 +486,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
           {/* Interactive Dynamic Stage Card */}
           <div style={{
             flex: 1,
-            background: 'rgba(15,15,22,0.6)',
+            background: 'var(--surface)',
             border: '1px solid var(--border-strong)',
             borderRadius: '16px',
             padding: '2rem',
@@ -517,13 +515,13 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '0.5rem',
-                  background: 'rgba(0,0,0,0.4)',
+                  background: 'var(--surface-raised)',
                   borderRadius: '12px',
                   border: '1px solid var(--border)',
                   padding: '1.25rem',
                   fontFamily: 'monospace',
                   fontSize: '0.75rem',
-                  color: 'var(--accent-cyan)',
+                  color: 'var(--text-primary)',
                   maxHeight: '260px',
                   overflowY: 'auto',
                   whiteSpace: 'pre-wrap',
@@ -556,7 +554,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '0.75rem',
-                  background: 'rgba(10,10,15,0.4)',
+                  background: 'var(--surface-raised)',
                   borderRadius: '12px',
                   border: '1px solid var(--border)',
                   padding: '1.25rem',
@@ -601,7 +599,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '0.75rem',
-                  background: 'rgba(10,10,15,0.4)',
+                  background: 'var(--surface-raised)',
                   borderRadius: '12px',
                   border: '1px solid var(--border)',
                   padding: '1.25rem',
@@ -618,7 +616,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                           : widget.color === 'amber' ? 'var(--accent-amber)'
                           : 'var(--accent-red)';
                         return (
-                          <div key={idx} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.5rem' }}>
+                          <div key={idx} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.5rem' }}>
                             <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>{widget.type || 'STAT'}</div>
                             <div style={{ fontSize: '0.85rem', fontWeight: 700, color: accentColor, marginTop: '0.25rem' }}>{widget.title}</div>
                           </div>
@@ -627,11 +625,11 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                     </div>
                   ) : (
                     <div style={{ display: 'flex', gap: '0.75rem' }}>
-                      <div style={{ flex: 1, height: '56px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.5rem' }}>
+                      <div style={{ flex: 1, height: '56px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.5rem' }}>
                         <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>STAT</div>
                         <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent-purple)' }}>Total Records</div>
                       </div>
-                      <div style={{ flex: 1, height: '56px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.5rem' }}>
+                      <div style={{ flex: 1, height: '56px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.5rem' }}>
                         <div style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>STAT</div>
                         <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--accent-blue)' }}>Completed Items</div>
                       </div>
@@ -735,7 +733,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
         <div style={{
           position: 'fixed',
           inset: 0,
-          background: 'rgba(5, 5, 8, 0.95)',
+          background: 'color-mix(in srgb, var(--bg) 95%, transparent)',
           backdropFilter: 'blur(20px)',
           zIndex: 1000,
           display: 'flex',
@@ -747,9 +745,9 @@ To get started, tell me: **what should be the workflow steps for this applicatio
             width: '100%',
             maxWidth: '520px',
             padding: '2.5rem',
-            background: 'rgba(15, 15, 22, 0.98)',
+            background: 'var(--surface)',
             border: '1px solid var(--border-strong)',
-            boxShadow: '0 24px 64px rgba(0,0,0,0.8), 0 0 80px rgba(99, 102, 241, 0.1)',
+            boxShadow: '0 24px 64px var(--shadow-color)',
             textAlign: 'center',
             display: 'flex',
             flexDirection: 'column',
@@ -781,7 +779,7 @@ To get started, tell me: **what should be the workflow steps for this applicatio
               flexDirection: 'column',
               gap: '1rem',
               textAlign: 'left',
-              background: 'rgba(0,0,0,0.2)',
+              background: 'var(--surface-raised)',
               padding: '1.25rem',
               borderRadius: '12px',
               border: '1px solid var(--border)',
@@ -812,8 +810,8 @@ To get started, tell me: **what should be the workflow steps for this applicatio
                         ? 'var(--accent-green)' 
                         : isActive 
                           ? 'linear-gradient(135deg, var(--accent-purple), var(--accent-blue))' 
-                          : 'rgba(255,255,255,0.05)',
-                      border: isActive ? '2px solid rgba(255,255,255,0.3)' : '1px solid var(--border)',
+                          : 'var(--surface-overlay)',
+                      border: isActive ? '2px solid var(--border-strong)' : '1px solid var(--border)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',

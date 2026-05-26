@@ -83,7 +83,7 @@ const AppConfigSchema = z.object({
 // Helper to instantiate specialized Google Gemini Client per Agent to support multiple API Keys
 function getModelForAgent(agentName: string) {
   const envName = `GEMINI_API_KEY_${agentName.toUpperCase().replace(/\s+/g, '_')}`
-  const customKey = process.env[envName] || process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY
+  const customKey = process.env[envName] || process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
   
   if (customKey) {
     const customGoogle = createGoogleGenerativeAI({

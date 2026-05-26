@@ -133,7 +133,7 @@ export default function AppPage() {
       <header style={{
         position: 'sticky', top: 0, zIndex: 40,
         borderBottom: '1px solid var(--border)',
-        background: 'rgba(10,10,15,0.95)',
+        background: 'color-mix(in srgb, var(--surface) 95%, transparent)',
         backdropFilter: 'blur(12px)',
         height: '56px',
         display: 'flex', alignItems: 'center',

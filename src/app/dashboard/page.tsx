@@ -153,7 +153,7 @@ export default function DashboardPage() {
       <header style={{
         position: 'sticky', top: 0, zIndex: 40,
         borderBottom: '1px solid var(--border)',
-        background: 'rgba(10,10,15,0.95)',
+        background: 'color-mix(in srgb, var(--surface) 95%, transparent)',
         backdropFilter: 'blur(12px)',
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -409,10 +409,10 @@ export default function DashboardPage() {
                   style={{
                     width: '100%',
                     padding: '0.875rem',
-                    background: 'rgba(0,0,0,0.3)',
+                    background: 'var(--surface-raised)',
                     border: '1px solid var(--border-strong)',
                     borderRadius: '8px',
-                    color: 'var(--accent-cyan)',
+                    color: 'var(--text-primary)',
                     fontFamily: 'monospace',
                     fontSize: '0.8rem',
                     lineHeight: '1.5',

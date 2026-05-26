@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateObject } from 'ai'
-import { google } from '@ai-sdk/google'
+import { google, createGoogleGenerativeAI } from '@ai-sdk/google'
 import { getServerSession } from '@/lib/auth-helpers'
 import { z } from 'zod'
 
@@ -62,8 +62,11 @@ CRITICAL INSTRUCTIONS:
   * codePreview: A clean, formatted JSON configuration block under construction (e.g., showing the models and views structured elegantly).
 - Always ensure your conversational response (in the 'message' field) matches the stage, guides them naturally, and maintains a highly collaborative, supportive, and premium tone.`
 
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
+    const googleClient = apiKey ? createGoogleGenerativeAI({ apiKey }) : google
+
     const result = await generateObject({
-      model: google('gemini-2.5-flash'),
+      model: googleClient('gemini-2.5-flash'),
       messages,
       system: systemPrompt,
       schema: chatResponseSchema,

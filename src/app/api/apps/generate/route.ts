@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { generateObject } from 'ai'
-import { google } from '@ai-sdk/google'
+import { google, createGoogleGenerativeAI } from '@ai-sdk/google'
 import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from '@/lib/auth-helpers'
@@ -92,9 +92,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'A valid prompt is required' }, { status: 400 })
     }
 
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY
+    const googleClient = apiKey ? createGoogleGenerativeAI({ apiKey }) : google
+
     // Generate structured app config via Gemini
     const { object } = await generateObject({
-      model: google('gemini-2.5-flash'),
+      model: googleClient('gemini-2.5-flash'),
       schema: AppConfigSchema,
       system: `You are an expert full-stack product designer who builds internal tools and business applications.
 Given a user's prompt describing an application idea, you will design a complete, production-ready data schema and UI configuration for it.

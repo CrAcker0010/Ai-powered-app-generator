@@ -74,7 +74,7 @@ export default function LandingPage() {
       <nav style={{
         position: 'sticky', top: 0, zIndex: 40,
         borderBottom: '1px solid var(--border)',
-        background: 'rgba(10,10,15,0.9)',
+        background: 'color-mix(in srgb, var(--surface) 90%, transparent)',
         backdropFilter: 'blur(12px)',
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1.5rem', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
